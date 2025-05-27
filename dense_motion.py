@@ -38,9 +38,9 @@ class DenseMotionNetwork(nn.Module):
         else:
             # Optimized architecture
             self.mask = nn.Sequential(
-                nn.Conv3d(self.hourglass.out_filters, self.hourglass.out_filters//2, kernel_size=3, padding=1),
+                nn.Conv3d(self.hourglass.out_filters, self.hourglass.out_filters, kernel_size=3, padding=1),
                 nn.ReLU(inplace=True),
-                nn.Conv3d(self.hourglass.out_filters//2, num_kp + 1, kernel_size=3, padding=1)
+                nn.Conv3d(self.hourglass.out_filters, num_kp + 1, kernel_size=3, padding=1)
             )
         
         self.compress = nn.Conv3d(feature_channel, compress, kernel_size=1)
@@ -53,13 +53,13 @@ class DenseMotionNetwork(nn.Module):
                 self.occlusion = nn.Conv2d(self.hourglass.out_filters*reshape_depth, 1, kernel_size=7, padding=3)
             else:
                 # Optimized occlusion layer too
-                occlusion_mid_channels = (self.hourglass.out_filters * reshape_depth) // 2
+                # occlusion_mid_channels = (self.hourglass.out_filters * reshape_depth) // 2
                 self.occlusion = nn.Sequential(
                     nn.Conv2d(self.hourglass.out_filters * reshape_depth, 
-                             occlusion_mid_channels, 
+                             self.hourglass.out_filters * reshape_depth, 
                              kernel_size=3, padding=1),
                     nn.ReLU(inplace=True),
-                    nn.Conv2d(occlusion_mid_channels, 1, kernel_size=3, padding=1)
+                    nn.Conv2d(self.hourglass.out_filters * reshape_depth, 1, kernel_size=3, padding=1)
                 )
         else:
             self.occlusion = None
