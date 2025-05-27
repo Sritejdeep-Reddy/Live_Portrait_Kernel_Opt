@@ -169,6 +169,7 @@ def load_model(ckpt_path, model_config, device, model_type):
 
     model.load_state_dict(torch.load(ckpt_path, map_location=lambda storage, loc: storage))
     model.convert_to_optimized()
+    print(f"Model optimized: {model.use_optimized}")
     model.eval()
     return model
 
