@@ -36,3 +36,6 @@ class MotionExtractor(nn.Module):
     def convert_to_optimized(self):
         # Placeholder method to avoid attribute error
         pass
+    def use_optimized(self):
+      # Placeholder method to avoid attribute error
+        pass
